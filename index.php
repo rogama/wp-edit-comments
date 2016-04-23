@@ -37,10 +37,11 @@ function edit_commnets()
         return null;
     } else if ($submit === "Guardar" && !empty($userOrigin) && !empty($userDestination)) {
         global $wpdb;
-        $result = $wpdb->query("UPDATE wp_ta_comments set user_id = {$userDestination} where user_id = {$userOrigin}");
+        $username = get_user_by ( 'ID', $userDestination )->user_nicename;
+        $result = $wpdb->query("UPDATE wp_ta_comments set comment_author = '{$username}', user_id = {$userDestination} where user_id = {$userOrigin}");
     }
 
-    if ($result === UPDATE_SUCCESS) {
+    if ($result >= UPDATE_SUCCESS) {
         $notice->displaySuccess('Cambios realizados correctamente.');
         $notice->displayAdminNotice();
     }
